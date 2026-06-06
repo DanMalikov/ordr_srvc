@@ -1,5 +1,9 @@
 from fastapi import FastAPI
 
+from app.utils.create_container import create_container
+
+container = create_container()
+
 app = FastAPI()
 
 
