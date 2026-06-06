@@ -1,4 +1,5 @@
-from pydantic_settings import BaseSettings
+from pydantic import computed_field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -11,6 +12,7 @@ class Settings(BaseSettings):
     postgres_username: str
     postgres_password: str
 
+    @computed_field
     @property
     def get_postgres_connecion_string(self):
         url = self.postgres_connection_string
@@ -19,3 +21,10 @@ class Settings(BaseSettings):
         elif url.startswith("postgresql://") and "+asyncpg" not in url:
             url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
         return url
+
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf=8", extra="ignore"
+    )
+
+
+settings = Settings()
