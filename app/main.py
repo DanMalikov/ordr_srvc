@@ -1,10 +1,22 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
 from app.utils.create_container import create_container
 
 container = create_container()
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    try:
+        yield
+    finally:
+        http_client = container.infrastructure.http_client()
+        await http_client.aclose()
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/")

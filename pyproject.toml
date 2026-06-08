@@ -9,6 +9,7 @@ dependencies = [
     "asyncpg>=0.31.0",
     "dependency-injector>=4.49.0",
     "fastapi>=0.135.3",
+    "httpx>=0.28.1",
     "pre-commit>=4.5.1",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.14.1",

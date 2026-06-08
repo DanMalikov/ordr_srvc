@@ -28,3 +28,8 @@ class OrderDomain(BaseModel):
     status: OrderStatusEnum
     created_at: datetime
     updated_at: datetime
+
+    def compare_quantity(self, actual_quantity):
+        if self.quantity > actual_quantity:
+            return False
+        return True
