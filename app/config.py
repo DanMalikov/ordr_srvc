@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     capashino_base_url: str
     api_key: str
 
-    @computed_field
+    @computed_field(return_type=str)
     @property
     def get_postgres_connecion_string(self):
         url = self.postgres_connection_string

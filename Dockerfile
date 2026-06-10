@@ -12,6 +12,8 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --locked --no-cache --no-install-project
 
 COPY app/ ./app/
+COPY alembic.ini ./
+COPY alembic/ ./alembic/
 
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
