@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from app.presentation.order_router import order_router
 from app.utils.create_container import create_container
 
 container = create_container()
@@ -17,6 +18,7 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app.include_router(order_router)
 
 
 @app.get("/")

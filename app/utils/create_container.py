@@ -4,7 +4,7 @@ from app.container import AppContainer
 
 def create_container():
     container = AppContainer()
-    container.config.from_keys(settings.model_dump())
+    container.config.from_dict(settings.model_dump())
     container.wire(packages=["app.presentation"])
 
     return container

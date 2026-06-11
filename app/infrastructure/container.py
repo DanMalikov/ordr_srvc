@@ -17,7 +17,7 @@ class InfrastructureContainer(DeclarativeContainer):
 
     engine = providers.Singleton[AsyncEngine](
         create_async_engine,
-        config.get_db_string,
+        config.get_postgres_connecion_string,
         echo=False,
         pool_pre_ping=True,
     )
@@ -26,12 +26,11 @@ class InfrastructureContainer(DeclarativeContainer):
     )
 
     http_client = providers.Singleton(
-        AsyncClient,
-        base_url=config.capashino_base_url,
-        headers={"X-API-Key": config.api_key},
-        timeout=5.0,
+        AsyncClient, base_url=config.capashino_base_url, timeout=5.0, trust_env=False
     )
 
-    catalog_client = providers.Factory(CatalogClient, http_client=http_client)
+    catalog_client = providers.Factory(
+        CatalogClient, http_client=http_client, api_key=config.api_key
+    )
 
     unit_of_work = providers.Factory(UnitOfWork, session_factory)

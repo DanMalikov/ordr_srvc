@@ -49,7 +49,7 @@ class OrderRepository:
             user_id=order.user_id,
             quantity=order.quantity,
             item_id=order.item_id,
-            idempotency_ket=order.idempotency_key,
+            idempotency_key=order.idempotency_key,
             status=order.status,
             created_at=order.created_at,
             updated_at=order.updated_at,

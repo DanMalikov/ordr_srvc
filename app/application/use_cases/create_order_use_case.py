@@ -25,6 +25,6 @@ class CreateOrderUseCase:
             if not order.compare_quantity(catalog_item.available_qty):
                 raise
 
-            uow.commit()
+            await uow.commit()
 
             return order

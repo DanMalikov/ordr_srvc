@@ -24,5 +24,9 @@ class _UnitOfWorkImplementation:
         self._session = session
         self._order_repo = OrderRepository(session)
 
-    async def orders(self):
+    @property
+    def orders(self):
         return self._order_repo
+
+    async def commit(self):
+        await self._session.commit()

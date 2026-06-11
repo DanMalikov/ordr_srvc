@@ -26,7 +26,7 @@ class ResponseOrderDTO(BaseModel):
     item_id: UUID
     status: OrderStatusEnum
     created_at: datetime
-    update_at: datetime
+    updated_at: datetime
 
 
 @order_router.post(
@@ -34,7 +34,7 @@ class ResponseOrderDTO(BaseModel):
 )
 @inject
 async def create_order(
-    order_data,
+    order_data: RequestCreateOrderDTO,
     create_order_use_case: CreateOrderUseCase = Depends(
         Provide[AppContainer.application.create_order_use_case]
     ),

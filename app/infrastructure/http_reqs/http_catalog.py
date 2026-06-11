@@ -15,12 +15,15 @@ class ItemResponse(BaseModel):
 
 
 class CatalogClient:
-    def __init__(self, http_client: httpx.AsyncClient):
+    def __init__(self, http_client: httpx.AsyncClient, api_key: str):
         self._client = http_client
+        self.api_key = api_key
 
     async def get_item(self, item_id: uuid.UUID) -> ItemResponse:
         try:
-            response = await self._client.get(url=f"/api/catalog/items/{item_id}")
+            response = await self._client.get(
+                url=f"/api/catalog/items/{item_id}", headers={"X-API-Key": self.api_key}
+            )
         except Exception:
             raise
 
