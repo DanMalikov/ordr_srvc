@@ -7,10 +7,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 
 from app.application.dto import CreateOrderDTO
-from app.application.exceptions import CompareQuantityError
 from app.application.use_cases.create_order_use_case import CreateOrderUseCase
 from app.application.use_cases.get_order_use_case import GetOrderUseCase
 from app.container import AppContainer
+from app.domain.exceptions import CompareQuantityError
 from app.domain.models import OrderStatusEnum
 from app.infrastructure.exceptions import CatalogRequestError, ItemNotFound
 
