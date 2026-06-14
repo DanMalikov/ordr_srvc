@@ -4,6 +4,8 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
+from app.domain.exceptions import CompareQuantityError
+
 
 class OrderStatusEnum(StrEnum):
     NEW = "NEW"
@@ -29,7 +31,8 @@ class OrderDomain(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    def compare_quantity(self, actual_quantity):
+    def validate_quantity(self, actual_quantity):
         if self.quantity > actual_quantity:
-            return False
-        return True
+            raise CompareQuantityError(
+                "Для бронирования указано неверное количество товара"
+            )

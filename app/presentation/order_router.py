@@ -3,14 +3,16 @@ from datetime import datetime
 from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 
 from app.application.dto import CreateOrderDTO
+from app.application.exceptions import CompareQuantityError
 from app.application.use_cases.create_order_use_case import CreateOrderUseCase
 from app.application.use_cases.get_order_use_case import GetOrderUseCase
 from app.container import AppContainer
 from app.domain.models import OrderStatusEnum
+from app.infrastructure.exceptions import CatalogRequestError, ItemNotFound
 
 order_router = APIRouter(prefix="/api/orders", tags=["orders"])
 
@@ -41,8 +43,18 @@ async def create_order(
 ):
     try:
         result = await create_order_use_case(order_data)
-    except:
-        raise
+    except CatalogRequestError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY, detail=str(exc)
+        ) from exc
+    except ItemNotFound as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
+    except CompareQuantityError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
     return result
 
 

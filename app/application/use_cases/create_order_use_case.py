@@ -22,8 +22,7 @@ class CreateOrderUseCase:
 
             order = await uow.orders.create_order(new_order)
 
-            if not order.compare_quantity(catalog_item.available_qty):
-                raise
+            order.validate_quantity(catalog_item.available_qty)
 
             await uow.commit()
 
