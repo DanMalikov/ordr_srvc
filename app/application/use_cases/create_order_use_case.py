@@ -1,4 +1,5 @@
 from app.application.dto import CreateOrderDTO
+from app.application.exceptions import ItemOutOfStock
 from app.domain.models import OrderDomain
 from app.infrastructure.http_reqs.http_catalog import CatalogClient
 from app.infrastructure.uow import UnitOfWork
@@ -19,6 +20,11 @@ class CreateOrderUseCase:
                 return check_idempotency
 
             catalog_item = await self._catalog_client.get_item(new_order.item_id)
+
+            if catalog_item.available_qty == 0:
+                raise ItemOutOfStock(
+                    f"Предмет {catalog_item.name} с id {catalog_item.id} закончился"
+                )
 
             order = await uow.orders.create_order(new_order)
 

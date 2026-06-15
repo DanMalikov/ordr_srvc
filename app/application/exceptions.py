@@ -4,3 +4,7 @@ class ApplicationError(Exception):
 
 class OrderNotFound(ApplicationError):
     pass
+
+
+class ItemOutOfStock(ApplicationError):
+    pass
