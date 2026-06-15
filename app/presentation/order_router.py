@@ -33,7 +33,7 @@ class ResponseOrderDTO(BaseModel):
 
 
 @order_router.post(
-    "/", response_model=ResponseOrderDTO, status_code=status.HTTP_201_CREATED
+    "", response_model=ResponseOrderDTO, status_code=status.HTTP_201_CREATED
 )
 @inject
 async def create_order(
@@ -60,7 +60,7 @@ async def create_order(
 
 
 @order_router.get(
-    "/{order_id}/", response_model=ResponseOrderDTO, status_code=status.HTTP_200_OK
+    "/{order_id}", response_model=ResponseOrderDTO, status_code=status.HTTP_200_OK
 )
 @inject
 async def get_order(
