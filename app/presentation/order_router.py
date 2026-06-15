@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 
 from app.application.dto import CreateOrderDTO
+from app.application.exceptions import OrderNotFound
 from app.application.use_cases.create_order_use_case import CreateOrderUseCase
 from app.application.use_cases.get_order_use_case import GetOrderUseCase
 from app.container import AppContainer
@@ -70,7 +71,9 @@ async def get_order(
 ):
     try:
         order = await get_order_use_case(order_id)
-    except:
-        raise
+    except OrderNotFound as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
+        ) from exc
 
     return order
