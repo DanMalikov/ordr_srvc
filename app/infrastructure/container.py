@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import (
 )
 
 from app.infrastructure.http_reqs.http_catalog import CatalogClient
+from app.infrastructure.http_reqs.http_payment import PaymentClient
 from app.infrastructure.uow import UnitOfWork
 
 
@@ -31,6 +32,10 @@ class InfrastructureContainer(DeclarativeContainer):
 
     catalog_client = providers.Factory(
         CatalogClient, http_client=http_client, api_key=config.api_key
+    )
+
+    payment_client = providers.Factory(
+        PaymentClient, http_client=http_client, api_key=config.api_key
     )
 
     unit_of_work = providers.Factory(UnitOfWork, session_factory)

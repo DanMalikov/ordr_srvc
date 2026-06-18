@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     postgres_password: str
     capashino_base_url: str
     api_key: str
+    callback_url: str
 
     @computed_field(return_type=str)
     @property

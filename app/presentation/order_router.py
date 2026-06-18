@@ -3,10 +3,10 @@ from datetime import datetime
 from uuid import UUID
 
 from dependency_injector.wiring import Provide, inject
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from pydantic import BaseModel
 
-from app.application.dto import CreateOrderDTO
+from app.application.dto import CreateOrderDTO, PaymentFromCallback
 from app.application.exceptions import ItemOutOfStock, OrderNotFound
 from app.application.use_cases.create_order_use_case import CreateOrderUseCase
 from app.application.use_cases.get_order_use_case import GetOrderUseCase
@@ -30,6 +30,10 @@ class ResponseOrderDTO(BaseModel):
     status: OrderStatusEnum
     created_at: datetime
     updated_at: datetime
+
+
+class AcceptPaymentCallback(PaymentFromCallback):
+    pass
 
 
 @order_router.post(
@@ -81,3 +85,17 @@ async def get_order(
         ) from exc
 
     return order
+
+
+@order_router.post("/payment_callback", status_code=status.HTTP_200_OK)
+@inject
+async def get_payment_by_callback(
+    callback_data: AcceptPaymentCallback,
+    payment_callback_use_case=Depends(
+        Provide[AppContainer.application.payment_callback_use_case]
+    ),
+):
+
+    await payment_callback_use_case(callback_data)
+
+    return Response(status_code=status.HTTP_200_OK)

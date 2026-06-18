@@ -21,6 +21,11 @@ class OrderStatusEnum(StrEnum):
     "заказ отменен"
 
 
+class PaymentStatusEnum(StrEnum):
+    succeeded = "succeeded"
+    failed = "failed"
+
+
 class OrderDomain(BaseModel):
     id: UUID
     user_id: str

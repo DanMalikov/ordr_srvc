@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.models import OrderDomain, OrderStatusEnum
@@ -22,6 +22,14 @@ class OrderRepository:
         self._session.add(order)
         await self._session.flush()
         return self._construct(order)
+
+    async def update_status(self, order_id: uuid.UUID, status: OrderStatusEnum) -> None:
+
+        await self._session.execute(
+            update(Order).where(Order.id == order_id).values(status=status)
+        )
+
+        await self._session.flush()
 
     async def check_idempotency(self, idempotency_key: str):
         """Проверка наличия ключа идемпотентности"""

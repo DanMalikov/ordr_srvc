@@ -8,3 +8,7 @@ class OrderNotFound(ApplicationError):
 
 class ItemOutOfStock(ApplicationError):
     pass
+
+
+class PaymentClientNotAvailable(ApplicationError):
+    pass
